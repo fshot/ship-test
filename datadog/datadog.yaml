@@ -2,11 +2,11 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app: datadog-test-datadog
+    app: datadog-datadog
     chart: datadog-1.10.1
     heritage: Tiller
-    release: datadog-test
-  name: datadog-test-datadog
+    release: datadog
+  name: datadog-datadog
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -15,18 +15,18 @@ metadata:
     app: kube-state-metrics
     chart: kube-state-metrics-0.9.0
     heritage: Tiller
-    release: datadog-test
-  name: datadog-test-kube-state-metrics
+    release: datadog
+  name: datadog-kube-state-metrics
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    app: datadog-test-datadog
+    app: datadog-datadog
     chart: datadog-1.10.1
     heritage: Tiller
-    release: datadog-test
-  name: datadog-test-datadog
+    release: datadog
+  name: datadog-datadog
 rules:
 - apiGroups:
   - ""
@@ -62,8 +62,8 @@ metadata:
     app: kube-state-metrics
     chart: kube-state-metrics-0.9.0
     heritage: Tiller
-    release: datadog-test
-  name: datadog-test-kube-state-metrics
+    release: datadog
+  name: datadog-kube-state-metrics
 rules:
 - apiGroups:
   - batch
@@ -189,18 +189,18 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app: datadog-test-datadog
+    app: datadog-datadog
     chart: datadog-1.10.1
     heritage: Tiller
-    release: datadog-test
-  name: datadog-test-datadog
+    release: datadog
+  name: datadog-datadog
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: datadog-test-datadog
+  name: datadog-datadog
 subjects:
 - kind: ServiceAccount
-  name: datadog-test-datadog
+  name: datadog-datadog
   namespace: default
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -210,29 +210,16 @@ metadata:
     app: kube-state-metrics
     chart: kube-state-metrics-0.9.0
     heritage: Tiller
-    release: datadog-test
-  name: datadog-test-kube-state-metrics
+    release: datadog
+  name: datadog-kube-state-metrics
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: datadog-test-kube-state-metrics
+  name: datadog-kube-state-metrics
 subjects:
 - kind: ServiceAccount
-  name: datadog-test-kube-state-metrics
+  name: datadog-kube-state-metrics
   namespace: default
----
-apiVersion: v1
-data:
-  api-key: TUlTU0lORw==
-kind: Secret
-metadata:
-  labels:
-    app: datadog-test-datadog
-    chart: datadog-1.10.1
-    heritage: Tiller
-    release: datadog-test
-  name: datadog-test-datadog
-type: Opaque
 ---
 apiVersion: v1
 kind: Service
@@ -243,8 +230,8 @@ metadata:
     app: kube-state-metrics
     chart: kube-state-metrics-0.9.0
     heritage: Tiller
-    release: datadog-test
-  name: datadog-test-kube-state-metrics
+    release: datadog
+  name: datadog-kube-state-metrics
 spec:
   ports:
   - name: http
@@ -253,8 +240,97 @@ spec:
     targetPort: 8080
   selector:
     app: kube-state-metrics
-    release: datadog-test
+    release: datadog
   type: ClusterIP
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: datadog-api-key
+  namespace: default
+spec:
+  encryptedData:
+    api-key: AgAFYETdsYiDnTGSxEUF1gVz4egKGJsgXTkGEcWkoD1h2b9RYEFP/4OgRhSAhj17rX0ZTZcVQHYpXo0BFdkstGQKaXTTIgvFWeAvPAdSDo4Yo1CBZd6rESjn21l0jt6p+KOBOGc4sHShV/RRW83KmBekvLvJ3f8/8+PSt/f86M0MC4lNEEwGh4caXEcmkHWdvBuy7Hw9Kcp/4qsAL94fzl8GUkKJEWxtkP4tWtHfmM1TinE9Kkt2WnkFX4qxJPMZ22Lff3kiQlGOyUme6zbrRhE1K0Wmq4YZynqbGAA7yg4TD/50m0CMb2+0OPwgd38eiDcXKvxAnQG2SlUyW3+4nGm/8sfQ3SeWPySlt7ksKcwIQa7kqVhg2dov9G2FQKHc7Ftg7KNt0MX/OVYL+YQMJRCLZwJOJvbpcP7o9Kqlq/y2imMNAFN2tr/rU4GgjCgWzDDBQeMc0lmzshjJad4AZIBIrK7yiLriRx7suWINHwd/fzG0MvrsIgHt9hh52A5mXkQaoXmYCUWnKJbXEvMpFNOAwn8NLeS2ihCzzp1759nMho74TAS/+S+xlTbJb8fjGC9A8JFw9C127mZ2yAbVsSdSNXHDXT5H+6hFzfuFXB+aDtAZRHmW+K9c8r754X97Hdwi4BNsIYNwhsUdZKDc+ma1BK6fWrizMuLgZW6SPOEPjjpL8jNaNTIYWcb/pA1sST8q8ocFVj9BDy95yns3WfOaFFY8FYzkErU=
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    app: datadog-datadog
+    chart: datadog-1.10.1
+    heritage: Tiller
+    release: datadog
+  name: datadog-datadog
+spec:
+  template:
+    metadata:
+      annotations:
+        checksum/autoconf-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
+        checksum/checksd-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
+        checksum/confd-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
+      labels:
+        app: datadog-datadog
+      name: datadog-datadog
+    spec:
+      containers:
+      - env:
+        - name: DD_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: api-key
+              name: datadog-api-key
+        - name: DD_LOG_LEVEL
+          value: INFO
+        - name: KUBERNETES
+          value: "yes"
+        - name: DD_KUBERNETES_KUBELET_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        image: datadog/agent:6.6.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - ./probe.sh
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        name: datadog
+        ports:
+        - containerPort: 8125
+          name: dogstatsdport
+          protocol: UDP
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: runtimesocket
+          readOnly: true
+        - mountPath: /host/proc
+          name: procdir
+          readOnly: true
+        - mountPath: /host/sys/fs/cgroup
+          name: cgroups
+          readOnly: true
+      serviceAccountName: datadog-datadog
+      volumes:
+      - hostPath:
+          path: /var/run/docker.sock
+        name: runtimesocket
+      - hostPath:
+          path: /proc
+        name: procdir
+      - hostPath:
+          path: /sys/fs/cgroup
+        name: cgroups
+  updateStrategy:
+    type: OnDelete
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -263,15 +339,15 @@ metadata:
     app: kube-state-metrics
     chart: kube-state-metrics-0.9.0
     heritage: Tiller
-    release: datadog-test
-  name: datadog-test-kube-state-metrics
+    release: datadog
+  name: datadog-kube-state-metrics
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: kube-state-metrics
-        release: datadog-test
+        release: datadog
     spec:
       containers:
       - args:
@@ -304,4 +380,4 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 5
         resources: null
-      serviceAccountName: datadog-test-kube-state-metrics
+      serviceAccountName: datadog-kube-state-metrics
