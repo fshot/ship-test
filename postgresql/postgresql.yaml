@@ -8,7 +8,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-2.7.10
+    chart: postgresql-3.0.0
     heritage: Tiller
     release: postgresql
   name: postgresql-postgresql-init-scripts
@@ -31,7 +31,7 @@ kind: Service
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-2.7.10
+    chart: postgresql-3.0.0
     heritage: Tiller
     release: postgresql
   name: postgresql-postgresql-headless
@@ -51,7 +51,7 @@ kind: Service
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-2.7.10
+    chart: postgresql-3.0.0
     heritage: Tiller
     release: postgresql
   name: postgresql-postgresql
