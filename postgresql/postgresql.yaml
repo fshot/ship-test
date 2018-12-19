@@ -1,20 +1,5 @@
 apiVersion: v1
 data:
-  README.md: |-
-    You can copy here your custom `.sh`, `.sql` or `.sql.gz` file so they are executed during the first boot of the image.
-
-    More info in the [bitnami-docker-postgresql](https://github.com/bitnami/bitnami-docker-postgresql#initializing-a-new-instance) repository.
-kind: ConfigMap
-metadata:
-  labels:
-    app: postgresql
-    chart: postgresql-3.2.0
-    heritage: Tiller
-    release: postgresql
-  name: postgresql-postgresql-init-scripts
----
-apiVersion: v1
-data:
   postgresql-password: SVFyR2VKWDdLdg==
 kind: Secret
 metadata:
@@ -31,7 +16,7 @@ kind: Service
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-3.2.0
+    chart: postgresql-3.2.1
     heritage: Tiller
     release: postgresql
   name: postgresql-postgresql-headless
@@ -51,7 +36,7 @@ kind: Service
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-3.2.0
+    chart: postgresql-3.2.1
     heritage: Tiller
     release: postgresql
   name: postgresql-postgresql
@@ -139,8 +124,6 @@ spec:
             cpu: 250m
             memory: 256Mi
         volumeMounts:
-        - mountPath: /docker-entrypoint-initdb.d
-          name: custom-init-scripts
         - mountPath: /bitnami/postgresql
           name: data
       initContainers:
@@ -163,10 +146,7 @@ spec:
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
-      volumes:
-      - configMap:
-          name: postgresql-postgresql-init-scripts
-        name: custom-init-scripts
+      volumes: []
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
