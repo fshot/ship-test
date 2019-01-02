@@ -16,7 +16,7 @@ kind: Service
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-3.7.1
+    chart: postgresql-3.7.2
     heritage: Tiller
     release: postgresql
   name: postgresql-postgresql-headless
@@ -36,7 +36,7 @@ kind: Service
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-3.7.1
+    chart: postgresql-3.7.2
     heritage: Tiller
     release: postgresql
   name: postgresql-postgresql
