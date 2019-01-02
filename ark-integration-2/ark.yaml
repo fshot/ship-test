@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: backups.ark.heptio.com
@@ -20,7 +20,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: configs.ark.heptio.com
@@ -37,7 +37,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: deletebackuprequests.ark.heptio.com
@@ -54,7 +54,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: downloadrequests.ark.heptio.com
@@ -71,7 +71,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: podvolumebackups.ark.heptio.com
@@ -88,7 +88,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: podvolumerestores.ark.heptio.com
@@ -105,7 +105,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: resticrepositories.ark.heptio.com
@@ -122,7 +122,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: restores.ark.heptio.com
@@ -139,7 +139,7 @@ kind: CustomResourceDefinition
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: schedules.ark.heptio.com
@@ -156,7 +156,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: ark-hook
@@ -166,7 +166,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: ark-server
@@ -178,7 +178,7 @@ metadata:
     rbac.authorization.kubernetes.io/autoupdate: "true"
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     kubernetes.io/bootstrapping: rbac-defaults
     release: ark
@@ -196,7 +196,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: ark-hook
@@ -214,7 +214,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: ark-server
@@ -236,7 +236,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: ark
@@ -247,7 +247,7 @@ kind: Secret
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.3
+    chart: ark-1.2.4
     heritage: Tiller
     release: ark
   name: ark
