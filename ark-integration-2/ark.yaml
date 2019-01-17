@@ -1,9 +1,11 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: backups.ark.heptio.com
@@ -18,9 +20,11 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: configs.ark.heptio.com
@@ -35,9 +39,11 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: deletebackuprequests.ark.heptio.com
@@ -52,9 +58,11 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: downloadrequests.ark.heptio.com
@@ -69,9 +77,11 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: podvolumebackups.ark.heptio.com
@@ -86,9 +96,11 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: podvolumerestores.ark.heptio.com
@@ -103,9 +115,11 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: resticrepositories.ark.heptio.com
@@ -120,9 +134,11 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: restores.ark.heptio.com
@@ -137,9 +153,11 @@ spec:
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
+  annotations:
+    helm.sh/hook: crd-install
   labels:
     app: ark
-    chart: ark-1.2.5
+    chart: ark-2.0.0
     heritage: Tiller
     release: ark
   name: schedules.ark.heptio.com
@@ -156,66 +174,14 @@ kind: ServiceAccount
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.5
-    heritage: Tiller
-    release: ark
-  name: ark-hook
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app: ark
-    chart: ark-1.2.5
-    heritage: Tiller
     release: ark
   name: ark-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  annotations:
-    rbac.authorization.kubernetes.io/autoupdate: "true"
-  labels:
-    app: ark
-    chart: ark-1.2.5
-    heritage: Tiller
-    kubernetes.io/bootstrapping: rbac-defaults
-    release: ark
-  name: ark-hook
-rules:
-- apiGroups:
-  - ark.heptio.com
-  resources:
-  - '*'
-  verbs:
-  - '*'
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.5
-    heritage: Tiller
-    release: ark
-  name: ark-hook
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: ark-hook
-subjects:
-- kind: ServiceAccount
-  name: ark-hook
-  namespace: default
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    app: ark
-    chart: ark-1.2.5
-    heritage: Tiller
     release: ark
   name: ark-server
 roleRef:
@@ -228,27 +194,28 @@ subjects:
   namespace: default
 ---
 apiVersion: v1
-data:
-  ark-config.yaml: "apiVersion: ark.heptio.com/v1\nkind: Config\nmetadata:\n  name:
-    default\n\nbackupStorageProvider:\n  name: \n  bucket: \nbackupSyncPeriod: 60m\ngcSyncPeriod:
-    60m\nscheduleSyncPeriod: 1m\nrestoreOnlyMode: false\n"
-kind: ConfigMap
-metadata:
-  labels:
-    app: ark
-    chart: ark-1.2.5
-    heritage: Tiller
-    release: ark
-  name: ark
----
-apiVersion: v1
 data: null
 kind: Secret
 metadata:
   labels:
     app: ark
-    chart: ark-1.2.5
-    heritage: Tiller
     release: ark
   name: ark
 type: Opaque
+---
+apiVersion: ark.heptio.com/v1
+backupStorageProvider:
+  bucket: null
+  name: null
+backupSyncPeriod: 60m
+gcSyncPeriod: 60m
+kind: Config
+metadata:
+  labels:
+    app: ark
+    chart: ark-2.0.0
+    heritage: Tiller
+    release: ark
+  name: default
+restoreOnlyMode: false
+scheduleSyncPeriod: 1m
