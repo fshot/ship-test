@@ -16,8 +16,6 @@ kind: Service
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-3.9.1
-    heritage: Tiller
     release: postgresql
   name: postgresql-postgresql-headless
 spec:
@@ -36,8 +34,6 @@ kind: Service
 metadata:
   labels:
     app: postgresql
-    chart: postgresql-3.9.1
-    heritage: Tiller
     release: postgresql
   name: postgresql-postgresql
 spec:
@@ -87,10 +83,6 @@ spec:
             secretKeyRef:
               key: postgresql-password
               name: postgresql-postgresql
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
         image: docker.io/bitnami/postgresql:10.6.0
         imagePullPolicy: Always
         livenessProbe:
@@ -98,7 +90,7 @@ spec:
             command:
             - sh
             - -c
-            - exec pg_isready -U "postgres" --host $POD_IP
+            - exec pg_isready -U "postgres" -h localhost
           failureThreshold: 6
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -113,7 +105,7 @@ spec:
             command:
             - sh
             - -c
-            - exec pg_isready -U "postgres" --host $POD_IP
+            - exec pg_isready -U "postgres" -h localhost
           failureThreshold: 6
           initialDelaySeconds: 5
           periodSeconds: 10
