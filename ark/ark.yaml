@@ -3,9 +3,10 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: backups.ark.heptio.com
@@ -22,17 +23,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
-  name: configs.ark.heptio.com
+  name: backupstoragelocations.ark.heptio.com
 spec:
   group: ark.heptio.com
   names:
-    kind: Config
-    plural: configs
+    kind: BackupStorageLocation
+    plural: backupstoragelocations
   scope: Namespaced
   version: v1
 ---
@@ -41,9 +43,10 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: deletebackuprequests.ark.heptio.com
@@ -60,9 +63,10 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: downloadrequests.ark.heptio.com
@@ -79,9 +83,10 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: podvolumebackups.ark.heptio.com
@@ -98,9 +103,10 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: podvolumerestores.ark.heptio.com
@@ -117,9 +123,10 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: resticrepositories.ark.heptio.com
@@ -136,9 +143,10 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: restores.ark.heptio.com
@@ -155,9 +163,10 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: schedules.ark.heptio.com
@@ -166,6 +175,26 @@ spec:
   names:
     kind: Schedule
     plural: schedules
+  scope: Namespaced
+  version: v1
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    helm.sh/hook: crd-install
+    helm.sh/hook-delete-policy: before-hook-creation
+  labels:
+    app: ark
+    chart: ark-3.0.0
+    heritage: Tiller
+    release: ark
+  name: volumesnapshotlocations.ark.heptio.com
+spec:
+  group: ark.heptio.com
+  names:
+    kind: VolumeSnapshotLocation
+    plural: volumesnapshotlocations
   scope: Namespaced
   version: v1
 ---
@@ -204,18 +233,15 @@ metadata:
 type: Opaque
 ---
 apiVersion: ark.heptio.com/v1
-backupStorageProvider:
-  bucket: null
-  name: null
-backupSyncPeriod: 60m
-gcSyncPeriod: 60m
-kind: Config
+kind: BackupStorageLocation
 metadata:
   labels:
     app: ark
-    chart: ark-2.0.0
+    chart: ark-3.0.0
     heritage: Tiller
     release: ark
   name: default
-restoreOnlyMode: false
-scheduleSyncPeriod: 1m
+spec:
+  objectStorage:
+    bucket: null
+  provider: null
