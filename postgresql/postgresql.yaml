@@ -76,9 +76,11 @@ spec:
     spec:
       containers:
       - env:
-        - name: POSTGRESQL_USERNAME
+        - name: PGDATA
+          value: /bitnami/postgresql
+        - name: POSTGRES_USER
           value: postgres
-        - name: POSTGRESQL_PASSWORD
+        - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               key: postgresql-password
