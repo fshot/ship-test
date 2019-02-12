@@ -117,6 +117,9 @@ spec:
           requests:
             cpu: 250m
             memory: 256Mi
+        securityContext:
+          fsGroup: 1001
+          runAsUser: 1001
         volumeMounts:
         - mountPath: /bitnami/postgresql
           name: data
@@ -141,9 +144,6 @@ spec:
         volumeMounts:
         - mountPath: /bitnami/postgresql
           name: data
-      securityContext:
-        fsGroup: 1001
-        runAsUser: 1001
       volumes: []
   updateStrategy:
     type: RollingUpdate
