@@ -6,7 +6,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: backups.ark.heptio.com
@@ -26,7 +26,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: backupstoragelocations.ark.heptio.com
@@ -46,7 +46,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: deletebackuprequests.ark.heptio.com
@@ -66,7 +66,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: downloadrequests.ark.heptio.com
@@ -86,7 +86,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: podvolumebackups.ark.heptio.com
@@ -106,7 +106,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: podvolumerestores.ark.heptio.com
@@ -126,7 +126,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: resticrepositories.ark.heptio.com
@@ -146,7 +146,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: restores.ark.heptio.com
@@ -166,7 +166,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: schedules.ark.heptio.com
@@ -186,7 +186,7 @@ metadata:
     helm.sh/hook-delete-policy: before-hook-creation
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: volumesnapshotlocations.ark.heptio.com
@@ -237,7 +237,7 @@ kind: BackupStorageLocation
 metadata:
   labels:
     app: ark
-    chart: ark-4.1.1
+    chart: ark-4.2.0
     heritage: Tiller
     release: ark
   name: default
