@@ -92,7 +92,7 @@ spec:
             command:
             - sh
             - -c
-            - exec pg_isready -U "postgres" -h localhost
+            - exec pg_isready -U "postgres" -h 127.0.0.1
           failureThreshold: 6
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -107,7 +107,7 @@ spec:
             command:
             - sh
             - -c
-            - exec pg_isready -U "postgres" -h localhost
+            - exec pg_isready -U "postgres" -h 127.0.0.1
           failureThreshold: 6
           initialDelaySeconds: 5
           periodSeconds: 10
