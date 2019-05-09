@@ -77,7 +77,7 @@ spec:
       containers:
       - env:
         - name: PGDATA
-          value: /bitnami/postgresql
+          value: /bitnami/postgresql/data
         - name: POSTGRES_USER
           value: postgres
         - name: POSTGRES_PASSWORD
