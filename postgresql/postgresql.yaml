@@ -76,6 +76,8 @@ spec:
     spec:
       containers:
       - env:
+        - name: BITNAMI_DEBUG
+          value: "false"
         - name: PGDATA
           value: /bitnami/postgresql/data
         - name: POSTGRES_USER
