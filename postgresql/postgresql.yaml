@@ -130,7 +130,8 @@ spec:
         - sh
         - -c
         - |
-          chown -R 1001:1001 /bitnami
+          find /bitnami/postgresql -mindepth 1 -maxdepth 1 -not -name ".snapshot" | \
+            xargs chown -R 1001:1001
           if [ -d /bitnami/postgresql/data ]; then
             chmod  0700 /bitnami/postgresql/data;
           fi
