@@ -87,7 +87,7 @@ spec:
             secretKeyRef:
               key: postgresql-password
               name: postgresql-postgresql
-        image: docker.io/bitnami/postgresql:10.8.0
+        image: docker.io/bitnami/postgresql:11.3.0
         imagePullPolicy: Always
         livenessProbe:
           exec:
