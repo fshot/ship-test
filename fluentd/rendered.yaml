@@ -117,9 +117,9 @@ spec:
         - name: OUTPUT_SSL_VERSION
           value: TLSv1
         - name: OUTPUT_BUFFER_CHUNK_LIMIT
-          value: 24M
+          value: 1M
         - name: OUTPUT_BUFFER_QUEUE_LIMIT
-          value: "8"
+          value: 64
         image: gcr.io/google-containers/fluentd-elasticsearch:v2.4.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
