@@ -381,6 +381,8 @@ spec:
           value: "true"
         - name: KUBERNETES
           value: true
+        - name: DD_KUBERNETES_POD_LABELS_AS_TAGS
+          value: '{"app":"kube_app","release":"helm_release"}'
         - name: DD_KUBERNETES_KUBELET_HOST
           valueFrom:
             fieldRef:
@@ -391,8 +393,8 @@ spec:
           value: "true"
         - name: DD_HEALTH_PORT
           value: "5555"
-        - name: DD_KUBERNETES_POD_LABELS_AS_TAGS
-          value: '{"app":"kube_app","release":"helm_release"}'
+        - name: EC2_TAGS
+          value: true
         image: datadog/agent:6.12.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
