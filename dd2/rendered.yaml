@@ -375,6 +375,8 @@ spec:
           value: INFO
         - name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
           value: "true"
+        - name: DD_TAGS
+          value: env:staging_eks
         - name: DD_LEADER_ELECTION
           value: "true"
         - name: DD_COLLECT_KUBERNETES_EVENTS
