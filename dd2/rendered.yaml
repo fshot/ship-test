@@ -392,7 +392,7 @@ spec:
         - name: DD_COLLECT_KUBERNETES_EVENTS
           value: "true"
         - name: KUBERNETES
-          value: "yes"
+          value: true
         - name: DD_KUBERNETES_POD_LABELS_AS_TAGS
           value: '{"app":"kube_app","release":"helm_release"}'
         - name: DD_KUBERNETES_KUBELET_HOST
@@ -406,8 +406,8 @@ spec:
         - name: DD_HEALTH_PORT
           value: "5555"
         - name: EC2_TAGS
-          value: "yes"
-        image: datadog/agent:6.10.1
+          value: true
+        image: datadog/agent:6.12.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
