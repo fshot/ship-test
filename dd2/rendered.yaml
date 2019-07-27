@@ -346,6 +346,16 @@ spec:
         runAsUser: 65534
       serviceAccountName: datadog-kube-state-metrics
 ---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: datadog-datadog
+  namespace: default
+spec:
+  encryptedData:
+    api-key: AgDZgLfpp0GUfnOshLO+CUmqtLu5Mg/eBeotD3qUvRg8NOgXudhUUCtLobgxLtk91H7gNjfCJ9ZSy0hDwVfoCbH1cSI0tA6cRMwwSsocuzppEYTsUoB/Z7jJdTUlrqovZP9bA+VmfQWxfJyONTiTlOhQAUfPnVUB/4kzO9t3LMF2cjJy+1D0odk3f4bLCtEqMXNWN4a1SBGpgL3MVaRuKtetlTPCCV5XBi6XEN/t4cpkkuY584K8sP+bDhRaN0QOtPN1OXXZpqQH2HmIhpMOYNlZBwbgMZeD6/TPQ7FAePMSYAhVsy1Et9SKUrclRG8GcQY6evvH2u66M9hOdyaFM8Cz7A5B6MekiePjCPPW0jOnpId9Uln0miq+nLD7w2wkNSDJJQIGVCLID0xQmpRXfq6tCHdITT3Ju5uGtDZvBILBZZh8VOX+AyBJpSJ8N/S5wAULl/EYos4LTe3+0+zEZvRqmcWPXeQMqtaksVvjMHPh7adFSedTqoDMZtel+4tMJEMETXHPEhMpLU1evtxACHpN0T12LAxvtZRE8/NrE+Yx162keILEhmYVWGGNM7VVUOIDfDWHNZ2iKoiD+b3ZLKCEd+mtM5zWyC9llsJ64LrkJOBNASesDpV49/Pp9w+M9PkldXX/wGGsdFMevZg4E3vcwoKb6B4NhXz+X/usHC9oAEkVJtKX31nNKW8FwQgTTsh4RTxsiZ/kXG4q2aaD9GIdF63extpMdxpxOJsK/hSd29k=
+---
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
@@ -375,12 +385,16 @@ spec:
           value: INFO
         - name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
           value: "true"
+        - name: DD_TAGS
+          value: env:staging_eks
         - name: DD_LEADER_ELECTION
           value: "true"
         - name: DD_COLLECT_KUBERNETES_EVENTS
           value: "true"
         - name: KUBERNETES
-          value: true
+          value: "yes"
+        - name: DD_KUBERNETES_POD_LABELS_AS_TAGS
+          value: '{"app":"kube_app","release":"helm_release"}'
         - name: DD_KUBERNETES_KUBELET_HOST
           valueFrom:
             fieldRef:
@@ -391,9 +405,9 @@ spec:
           value: "true"
         - name: DD_HEALTH_PORT
           value: "5555"
-        - name: DD_KUBERNETES_POD_LABELS_AS_TAGS
-          value: '{"app":"kube_app","release":"helm_release"}'
-        image: datadog/agent:6.12.1
+        - name: EC2_TAGS
+          value: "yes"
+        image: datadog/agent:6.10.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
@@ -407,9 +421,16 @@ spec:
         name: datadog
         ports:
         - containerPort: 8125
+          hostPort: 8125
           name: dogstatsdport
           protocol: UDP
-        resources: {}
+        resources:
+          limits:
+            cpu: 200m
+            memory: 1024Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
         volumeMounts:
         - mountPath: /var/run/docker.sock
           name: runtimesocket
@@ -430,6 +451,8 @@ spec:
         - mountPath: /var/lib/docker/containers
           name: logcontainerpath
           readOnly: true
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
       serviceAccountName: datadog
       volumes:
       - hostPath:
