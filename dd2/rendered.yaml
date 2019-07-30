@@ -3,8 +3,10 @@ imagePullSecrets: []
 kind: ServiceAccount
 metadata:
   labels:
-    app: kube-state-metrics
-    release: datadog
+    app.kubernetes.io/instance: datadog
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: kube-state-metrics
+    helm.sh/chart: kube-state-metrics-2.0.0
   name: datadog-kube-state-metrics
 ---
 apiVersion: v1
@@ -95,10 +97,19 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
   labels:
-    app: kube-state-metrics
-    release: datadog
+    app.kubernetes.io/instance: datadog
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: kube-state-metrics
+    helm.sh/chart: kube-state-metrics-2.0.0
   name: datadog-kube-state-metrics
 rules:
+- apiGroups:
+  - certificates.k8s.io
+  resources:
+  - certificatesigningrequests
+  verbs:
+  - list
+  - watch
 - apiGroups:
   - ""
   resources:
@@ -115,6 +126,7 @@ rules:
   - watch
 - apiGroups:
   - extensions
+  - apps
   resources:
   - daemonsets
   verbs:
@@ -122,6 +134,7 @@ rules:
   - watch
 - apiGroups:
   - extensions
+  - apps
   resources:
   - deployments
   verbs:
@@ -138,6 +151,13 @@ rules:
   - autoscaling
   resources:
   - horizontalpodautoscalers
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - extensions
+  resources:
+  - ingresses
   verbs:
   - list
   - watch
@@ -199,6 +219,7 @@ rules:
   - watch
 - apiGroups:
   - extensions
+  - apps
   resources:
   - replicasets
   verbs:
@@ -260,8 +281,10 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app: kube-state-metrics
-    release: datadog
+    app.kubernetes.io/instance: datadog
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: kube-state-metrics
+    helm.sh/chart: kube-state-metrics-2.0.0
   name: datadog-kube-state-metrics
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -278,8 +301,10 @@ metadata:
   annotations:
     prometheus.io/scrape: "true"
   labels:
-    app: kube-state-metrics
-    release: datadog
+    app.kubernetes.io/instance: datadog
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: kube-state-metrics
+    helm.sh/chart: kube-state-metrics-2.0.0
   name: datadog-kube-state-metrics
 spec:
   ports:
@@ -288,33 +313,40 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: kube-state-metrics
-    release: datadog
+    app.kubernetes.io/instance: datadog
+    app.kubernetes.io/name: kube-state-metrics
   type: ClusterIP
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: kube-state-metrics
-    release: datadog
+    app.kubernetes.io/instance: datadog
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: kube-state-metrics
+    helm.sh/chart: kube-state-metrics-2.0.0
   name: datadog-kube-state-metrics
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kube-state-metrics
   template:
     metadata:
       labels:
-        app: kube-state-metrics
-        release: datadog
+        app.kubernetes.io/instance: datadog
+        app.kubernetes.io/name: kube-state-metrics
     spec:
       containers:
       - args:
+        - --collectors=certificatesigningrequests
         - --collectors=configmaps
         - --collectors=cronjobs
         - --collectors=daemonsets
         - --collectors=deployments
         - --collectors=endpoints
         - --collectors=horizontalpodautoscalers
+        - --collectors=ingresses
         - --collectors=jobs
         - --collectors=limitranges
         - --collectors=namespaces
@@ -329,7 +361,7 @@ spec:
         - --collectors=secrets
         - --collectors=services
         - --collectors=statefulsets
-        image: k8s.gcr.io/kube-state-metrics:v1.5.0
+        image: quay.io/coreos/kube-state-metrics:v1.6.0
         imagePullPolicy: IfNotPresent
         name: kube-state-metrics
         ports:
@@ -341,6 +373,7 @@ spec:
           initialDelaySeconds: 5
           timeoutSeconds: 5
         resources: null
+      hostNetwork: false
       securityContext:
         fsGroup: 65534
         runAsUser: 65534
@@ -407,7 +440,7 @@ spec:
           value: "5555"
         - name: EC2_TAGS
           value: true
-        image: datadog/agent:6.12.1
+        image: datadog/agent:6.13.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 6
