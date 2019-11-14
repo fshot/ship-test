@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: backups.velero.io
 spec:
   group: velero.io
@@ -28,7 +28,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: backupstoragelocations.velero.io
 spec:
   group: velero.io
@@ -48,7 +48,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: deletebackuprequests.velero.io
 spec:
   group: velero.io
@@ -68,7 +68,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: downloadrequests.velero.io
 spec:
   group: velero.io
@@ -88,7 +88,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: podvolumebackups.velero.io
 spec:
   group: velero.io
@@ -108,7 +108,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: podvolumerestores.velero.io
 spec:
   group: velero.io
@@ -128,7 +128,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: resticrepositories.velero.io
 spec:
   group: velero.io
@@ -148,7 +148,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: restores.velero.io
 spec:
   group: velero.io
@@ -168,7 +168,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: schedules.velero.io
 spec:
   group: velero.io
@@ -188,7 +188,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: serverstatusrequests.velero.io
 spec:
   group: velero.io
@@ -208,7 +208,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: volumesnapshotlocations.velero.io
 spec:
   group: velero.io
@@ -225,7 +225,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: velero-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -236,7 +236,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: velero-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -255,7 +255,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: velero
 type: Opaque
 ---
@@ -266,7 +266,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: default
 spec:
   objectStorage:
@@ -280,7 +280,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.3.1
+    helm.sh/chart: velero-2.3.2
   name: default
 spec:
   provider: null
