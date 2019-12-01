@@ -192,7 +192,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.4.0
+    helm.sh/chart: velero-2.5.0
   name: velero-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -203,7 +203,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.4.0
+    helm.sh/chart: velero-2.5.0
   name: velero-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -222,7 +222,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.4.0
+    helm.sh/chart: velero-2.5.0
   name: velero
 type: Opaque
 ---
@@ -233,7 +233,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.4.0
+    helm.sh/chart: velero-2.5.0
   name: default
 spec:
   objectStorage:
@@ -247,7 +247,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.4.0
+    helm.sh/chart: velero-2.5.0
   name: default
 spec:
   provider: null
