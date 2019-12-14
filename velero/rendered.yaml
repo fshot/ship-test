@@ -192,7 +192,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.7.0
+    helm.sh/chart: velero-2.7.1
   name: velero-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -203,7 +203,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.7.0
+    helm.sh/chart: velero-2.7.1
   name: velero-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -222,9 +222,28 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.7.0
+    helm.sh/chart: velero-2.7.1
   name: velero
 type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: velero
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: velero
+    helm.sh/chart: velero-2.7.1
+  name: velero
+spec:
+  ports:
+  - name: monitoring
+    port: 8085
+    targetPort: monitoring
+  selector:
+    app.kubernetes.io/instance: velero
+    app.kubernetes.io/name: velero
+  type: ClusterIP
 ---
 apiVersion: velero.io/v1
 kind: BackupStorageLocation
@@ -233,7 +252,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.7.0
+    helm.sh/chart: velero-2.7.1
   name: default
 spec:
   objectStorage:
@@ -247,7 +266,7 @@ metadata:
     app.kubernetes.io/instance: velero
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: velero
-    helm.sh/chart: velero-2.7.0
+    helm.sh/chart: velero-2.7.1
   name: default
 spec:
   provider: null
