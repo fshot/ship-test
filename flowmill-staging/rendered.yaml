@@ -1,0 +1,267 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: flowmill-k8s-collector
+    release: flowmill-k8s
+  name: flowmill-k8s-collector
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: flowmill-k8s-collector
+    release: flowmill-k8s
+  name: flowmill-k8s-collector
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - replicasets
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: flowmill-k8s-collector
+    release: flowmill-k8s
+  name: flowmill-k8s-collector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: flowmill-k8s-collector
+subjects:
+- kind: ServiceAccount
+  name: flowmill-k8s-collector
+  namespace: default
+---
+apiVersion: v1
+data:
+  config.yaml: |
+    labels:
+      environment: staging
+kind: ConfigMap
+metadata:
+  name: flowmill-k8s-config
+  namespace: default
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: flowmill-k8s
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: flowmill-k8s-collector
+    helm.sh/chart: flowmill-k8s-0.8.1067
+  name: flowmill-k8s-collector
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: flowmill-k8s
+      app.kubernetes.io/name: flowmill-k8s-collector
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        rollingUpdateVersion: "1"
+      labels:
+        app.kubernetes.io/instance: flowmill-k8s
+        app.kubernetes.io/name: flowmill-k8s-collector
+    spec:
+      containers:
+      - image: docker.io/flowmill/k8s-watcher:v0.8.1067
+        imagePullPolicy: IfNotPresent
+        name: flowmill-k8s-watcher
+      - args:
+        - --config-file
+        - /etc/flowmill/config.yaml
+        - --log-console
+        - --info
+        env:
+        - name: FLOWMILL_AUTH_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: flowmill_agent_key_id
+              name: flowmill-k8s-agent-key
+        - name: FLOWMILL_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: flowmill_agent_secret
+              name: flowmill-k8s-agent-key
+        - name: FLOWMILL_AUTHZ_SERVER
+          value: app.flowmill.com
+        - name: FLOWMILL_INTAKE_NAME
+          value: replicated.intake.flowmill.com
+        - name: FLOWMILL_INTAKE_HOST
+          value: intake.flowmill.com
+        - name: FLOWMILL_INTAKE_PORT
+          value: "443"
+        image: docker.io/flowmill/k8s-relay:v0.8.1067
+        imagePullPolicy: IfNotPresent
+        name: flowmill-k8s-relay
+        volumeMounts:
+        - mountPath: /etc/flowmill
+          name: flowmill-k8s-relay-config
+      - args:
+        - --log-console
+        - --info
+        env:
+        - name: FLOWMILL_AUTH_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: flowmill_agent_key_id
+              name: flowmill-k8s-agent-key
+        - name: FLOWMILL_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: flowmill_agent_secret
+              name: flowmill-k8s-agent-key
+        - name: FLOWMILL_AUTHZ_SERVER
+          value: app.flowmill.com
+        - name: FLOWMILL_INTAKE_NAME
+          value: replicated.intake.flowmill.com
+        - name: FLOWMILL_INTAKE_HOST
+          value: intake.flowmill.com
+        - name: FLOWMILL_INTAKE_PORT
+          value: "443"
+        image: docker.io/flowmill/aws-collector:v0.8.1067
+        imagePullPolicy: IfNotPresent
+        name: flowmill-aws-collector
+      securityContext: {}
+      serviceAccount: flowmill-k8s-collector
+      serviceAccountName: flowmill-k8s-collector
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: flowmill-k8s-relay-config
+        projected:
+          sources:
+          - configMap:
+              items:
+              - key: config.yaml
+                path: config.yaml
+              name: flowmill-k8s-config
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations: null
+  labels:
+    app.kubernetes.io/instance: flowmill-k8s
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: flowmill-k8s-agent
+    helm.sh/chart: flowmill-k8s-0.8.1067
+  name: flowmill-k8s-agent
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: flowmill-k8s
+      app.kubernetes.io/name: flowmill-k8s-agent
+  template:
+    metadata:
+      annotations:
+        release_number: "3"
+      labels:
+        app.kubernetes.io/instance: flowmill-k8s
+        app.kubernetes.io/name: flowmill-k8s-agent
+    spec:
+      containers:
+      - args:
+        - --config-file
+        - /etc/flowmill/config.yaml
+        - --log-console
+        - --info
+        env:
+        - name: FLOWMILL_DISABLE_HTTP_METRICS
+          value: "false"
+        - name: FLOWMILL_AUTH_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: flowmill_agent_key_id
+              name: flowmill-k8s-agent-key
+        - name: FLOWMILL_AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: flowmill_agent_secret
+              name: flowmill-k8s-agent-key
+        - name: FLOWMILL_AUTHZ_SERVER
+          value: app.flowmill.com
+        - name: FLOWMILL_INTAKE_NAME
+          value: replicated.intake.flowmill.com
+        - name: FLOWMILL_INTAKE_HOST
+          value: intake.flowmill.com
+        - name: FLOWMILL_INTAKE_PORT
+          value: "443"
+        image: docker.io/flowmill/agent:v0.8.1067
+        imagePullPolicy: IfNotPresent
+        name: flowmill-k8s-agent
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /usr/src
+          name: usr-src
+          readOnly: true
+        - mountPath: /lib/modules
+          name: lib-modules
+          readOnly: true
+        - mountPath: /etc/flowmill
+          name: flowmill-k8s-agent-config
+          readOnly: true
+        - mountPath: /hostfs/sys/fs/cgroup
+          name: hostfs-sys-fs-cgroup
+          readOnly: true
+      hostNetwork: true
+      hostPID: true
+      tolerations:
+      - effect: NoExecute
+        operator: Exists
+      - effect: NoSchedule
+        operator: Exists
+      volumes:
+      - name: flowmill-k8s-agent-config
+        projected:
+          sources:
+          - configMap:
+              items:
+              - key: config.yaml
+                path: config.yaml
+              name: flowmill-k8s-config
+      - hostPath:
+          path: /usr/src
+          type: Directory
+        name: usr-src
+      - hostPath:
+          path: /lib/modules
+          type: Directory
+        name: lib-modules
+      - hostPath:
+          path: /sys/fs/cgroup
+          type: Directory
+        name: hostfs-sys-fs-cgroup
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: flowmill-k8s-agent-key
+  namespace: default
+spec:
+  encryptedData:
+    keyId: AgCtn31Wzqr2ukQOSFy5ahaiBuACuaBOrQCR4zqGPTtzFc0vEhqGFoom+jlv9/BSR7d+TFnU+91w9aBG1t8OWzx7zmzpouM7T7Bt4osXiqPIv+R75P2tEvKpB6sU4zMHzoJmRD3IRAoyFfkg4i6XNVIG0J59nAy5iBwdzGnPQOZSm3mLdm2DZtuKcreEZdzzt3BxtvPWqMJk3ktDckSzV2qFCNtIkLqMfzgeTfpsAXCu6GQIo+O0Obp6PoWAAevg0zNYFxojNviYOtKV1zih9vMD23ZkWev1Jfn6Y/qTJcdapU783FFCC2g27lH1Fge3F6Sg48BHZK4knxMfYJSBdlrpTtKboRnuF0Z6wrZXBclytv24v03PlBP9L1gZ1CSs3+A4kL8PcwTMl3cOlFoobIJMUn1jqFO8hcwLVJego7cp6ZIUy+B+E+gi1dQKcksYwgnOQ0GjZSpMs37E0r0A4iFbmmS09C6IaB2528zWAbdPqvADLoRzz3aS4qh0cfN+X2JEY+g5cv6hJL5rozgK0/coXnFs3WFM+71uyfxCl89gFtLXHK1q/pDHg+Z8G17eNoK+L4aKfPpe3onsgnTVkp9Qh3idz5hi6zD3+hUvGSO+tZyEs9YWomIV02sm2i+RDU2RW1rbRexCUR2Pt48nDC3bd1J748t8UCz4PjEQbOpv4DwBdyGT4yu+w+BYt8A48sPmjS90N4+LTCJiZ2gQYJkX3MTxkdjzx6fcTL+C7d4P6Yrat4C9b+oY
+    secret: AgDHPnS9IQn3wKdj22muNOnL7v+fnDhfTWPDFyR0aJOViw2BSY2XEMfKQQkVYHHudEAVv9SS5AexmJn/hMCRclLx4FSQsmU6xCpzTP4IdHbpoAo67VRsUNYkEr7nPRNUqpDyjvcSelrYPZH5AbTMIuFwJy0mCALkuCAwMTDnEd8zQWj7i1sVtRDIhTBHoXBh/I8bnFy6FSEPG9cbk1A+Ydm0INlBnQzrhLpoeDw640QjSvgqiNGLh9Z9kuf/LUc3AkjaZ4ZEwhQMdskuCl0zukIetXIhzH8sX8AChIBksxXHOc6wAB87hsg7U19lX660hFzIurSW6YjswaZhc/3+GJKds9CtIjds6JbggjcsLqUy4Evt0/6MjGzQ0LqQZJJdKAYaA23HYlpz1tx+763s6u203CNS2HdwNWrFtu+5scX/icuonUmkcAlInj8ERbye/mUvmlenqX3lUvia74KXur9wI+Wm5z1bpSre2UEIxFtN/iX4AXLQ4CZdlvIZji6oB+ZvTQpFrTAn0pvXAlYfHSux/146h39ne/UfQ1hrZxXZpKIK55ymEk8gBTOvmZ2OHYGOTwAeisxbLMeSPjwTVvbCTMO8T96s5t/mP3IJzi5j0xIaxKhKSN1u6+04P1XZ/1PcQjNoGztIxezlOBVh+zbABYTogVlsr42Bc3DXocybtFAwW0AFIlYz8JQ/Qv4SLe4nAVtWmeNoIKJ4PrdnshRtZsP2Rg==
+type: Opaque
