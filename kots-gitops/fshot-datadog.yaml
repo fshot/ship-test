@@ -303,6 +303,29 @@ subjects:
 ---
 apiVersion: v1
 data:
+  tls:
+    yaml: |
+      instances:
+      - server: 54.174.248.164
+kind: ConfigMap
+metadata:
+  annotations:
+    checksum/autoconf-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
+    checksum/confd-config: 073d447c46c3a1d22220b0d6ec8a1b69960180c2f432963cce2e6196d0158ec9
+  labels:
+    app: datadog
+    app.kubernetes.io/instance: datadog
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: datadog
+    app.kubernetes.io/version: "7"
+    chart: datadog-1.39.2
+    helm.sh/chart: datadog-1.39.2
+    heritage: Tiller
+    release: datadog
+  name: datadog-confd
+---
+apiVersion: v1
+data:
   api-key: PERBVEFET0dfQVBJX0tFWT4=
 kind: Secret
 metadata:
@@ -427,7 +450,7 @@ spec:
       annotations:
         checksum/autoconf-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
         checksum/checksd-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
-        checksum/confd-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
+        checksum/confd-config: 073d447c46c3a1d22220b0d6ec8a1b69960180c2f432963cce2e6196d0158ec9
       labels:
         app: datadog
       name: datadog
@@ -478,6 +501,9 @@ spec:
           readOnly: true
         - mountPath: /var/run/s6
           name: s6-run
+        - mountPath: /conf.d
+          name: confd
+          readOnly: true
       serviceAccountName: datadog
       volumes:
       - hostPath:
@@ -491,6 +517,9 @@ spec:
         name: cgroups
       - emptyDir: {}
         name: s6-run
+      - configMap:
+          name: datadog-confd
+        name: confd
       - hostPath:
           path: /etc/passwd
         name: passwd
