@@ -308,11 +308,12 @@ data:
       - vendor.replicated.com
       - registry.replicated.com
       - help.replicated.com
+      - kots.io
 kind: ConfigMap
 metadata:
   annotations:
     checksum/autoconf-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
-    checksum/confd-config: a74c00d6206b95eca09ca3ad3ca02c1973903a0ba27a946ebad3e2e4a44ca72f
+    checksum/confd-config: 767f3624cd74c1432ccc08443881c81d41e2574995882f1e3b92e624677b0ac9
   labels:
     app: datadog
     app.kubernetes.io/instance: datadog
@@ -451,7 +452,7 @@ spec:
       annotations:
         checksum/autoconf-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
         checksum/checksd-config: 38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed
-        checksum/confd-config: a74c00d6206b95eca09ca3ad3ca02c1973903a0ba27a946ebad3e2e4a44ca72f
+        checksum/confd-config: 767f3624cd74c1432ccc08443881c81d41e2574995882f1e3b92e624677b0ac9
       labels:
         app: datadog
       name: datadog
